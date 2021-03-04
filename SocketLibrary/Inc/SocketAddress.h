@@ -14,6 +14,13 @@ public:
 		memcpy(&mSockAddr, &inSockAddr, sizeof(sockaddr));
 	}
 
+	SocketAddress()
+	{
+		GetAsSockAddrIn()->sin_family = AF_INET;
+		GetAsSockAddrIn()->sin_addr.S_un.S_addr = INADDR_ANY;
+		GetAsSockAddrIn()->sin_port = 0;
+	}
+
 	size_t GetSize() const { return sizeof(sockaddr); }
 
 private:

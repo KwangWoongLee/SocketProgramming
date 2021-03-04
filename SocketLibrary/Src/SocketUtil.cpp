@@ -70,3 +70,22 @@ TCPSocketPtr SocketUtil::CreateTCPSocket(SocketAddressFamily inFamily)
 		return nullptr;
 	}
 }
+
+SocketAddressPtr SocketUtil::CreateIPv4FromString(const string& inString)
+{
+	auto pos = inString.find_last_of(':');
+	string host, service;
+	if (pos != string::npos)
+	{
+		host = inString.substr(0, pos);
+		service = inString.substr(pos + 1);
+	}
+	else
+	{
+		host = inString;
+		service = "0";
+	}
+	//사용금지
+	return SocketAddressPtr(new SocketAddress());
+	
+}

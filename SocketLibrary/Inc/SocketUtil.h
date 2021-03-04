@@ -17,4 +17,5 @@ public:
 	static UDPSocketPtr	CreateUDPSocket(SocketAddressFamily inFamily);
 	static TCPSocketPtr	CreateTCPSocket(SocketAddressFamily inFamily);
 
+	static SocketAddressPtr CreateIPv4FromString(const string& inString);
 };
