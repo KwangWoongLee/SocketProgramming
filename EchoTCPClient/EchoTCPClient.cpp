@@ -6,15 +6,15 @@ int main()
     SocketUtil::StaticInit();
 
     TCPSocketPtr mSocket = SocketUtil::CreateTCPSocket(IPv4);
-    
+
     SocketAddressPtr serverAddress = SocketAddressFactory::CreateIPv4FromString("127.0.0.1:8000");
 
- 
+
     if (mSocket->Connect(*serverAddress) != NOERROR)
     {
         return 0;
     }
-    
+
     string msg;
     char recvMsg[256];
 
@@ -25,7 +25,7 @@ int main()
 
         mSocket->Send(msg.c_str(), msg.length());
 
-        int recvByte = mSocket->Receive(recvMsg,256);
+        int recvByte = mSocket->Receive(recvMsg, 256);
         recvMsg[recvByte] = '\0';
 
         std::cout << "서버 : " << recvMsg << std::endl;

@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{138b02f6-0dcc-4d7b-919f-1230d2d5fa12}</ProjectGuid>
-    <RootNamespace>SimpleTCPServer</RootNamespace>
+    <ProjectGuid>{05dd42d5-a229-4e8c-8e12-2d831b14339d}</ProjectGuid>
+    <RootNamespace>EchoTCPClient</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -143,7 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="SimpleTCPServer.cpp" />
+    <ClCompile Include="EchoTCPClient.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SocketLibrary\SocketLibrary.vcxproj">

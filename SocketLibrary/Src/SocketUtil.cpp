@@ -71,21 +71,69 @@ TCPSocketPtr SocketUtil::CreateTCPSocket(SocketAddressFamily inFamily)
 	}
 }
 
-SocketAddressPtr SocketUtil::CreateIPv4FromString(const string& inString)
+
+fd_set* SocketUtil::FillSetFromVector(fd_set& outSet, const vector< TCPSocketPtr >* inSockets)
 {
-	auto pos = inString.find_last_of(':');
-	string host, service;
-	if (pos != string::npos)
+	if (inSockets)
 	{
-		host = inString.substr(0, pos);
-		service = inString.substr(pos + 1);
+		FD_ZERO(&outSet);
+
+		for (const TCPSocketPtr& socket : *inSockets)
+		{
+			FD_SET(socket->mSocket, &outSet);
+		}
+		return &outSet;
 	}
 	else
 	{
-		host = inString;
-		service = "0";
+		return nullptr;
 	}
-	//사용금지
-	return SocketAddressPtr(new SocketAddress());
-	
+}
+
+void SocketUtil::FillVectorFromSet(vector< TCPSocketPtr >* outSockets, const vector< TCPSocketPtr >* inSockets, const fd_set& inSet)
+{
+	if (inSockets && outSockets)
+	{
+		outSockets->clear();
+		for (const TCPSocketPtr& socket : *inSockets)
+		{
+			if (FD_ISSET(socket->mSocket, &inSet))
+			{
+				outSockets->push_back(socket);
+			}
+		}
+	}
+}
+
+int SocketUtil::Select(const vector< TCPSocketPtr >* inReadSet,
+	vector< TCPSocketPtr >* outReadSet,
+	const vector< TCPSocketPtr >* inWriteSet,
+	vector< TCPSocketPtr >* outWriteSet,
+	const vector< TCPSocketPtr >* inExceptSet,
+	vector< TCPSocketPtr >* outExceptSet)
+{
+	//build up some sets from our vectors
+	fd_set read, write, except;
+
+	int nfds = 0;
+
+	fd_set* readPtr = FillSetFromVector(read, inReadSet);
+	fd_set* writePtr = FillSetFromVector(write, inWriteSet);
+	fd_set* exceptPtr = FillSetFromVector(except, inExceptSet);
+
+	int toRet = select(nfds + 1, readPtr, writePtr, exceptPtr, nullptr);
+
+	if (toRet > 0)
+	{
+		FillVectorFromSet(outReadSet, inReadSet, read);
+		FillVectorFromSet(outWriteSet, inWriteSet, write);
+		FillVectorFromSet(outExceptSet, inExceptSet, except);
+	}
+
+	else if(toRet == -1)
+	{
+		SocketUtil::ReportError("SocketUtil::Select");
+		return SocketUtil::GetLastError();
+	}
+	return toRet;
 }

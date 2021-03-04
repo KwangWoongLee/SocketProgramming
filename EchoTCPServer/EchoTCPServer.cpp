@@ -7,7 +7,7 @@ int main()
 
     TCPSocketPtr mSocket = SocketUtil::CreateTCPSocket(IPv4);
 
-    SocketAddress ownAddress(INADDR_ANY,8000);
+    SocketAddress ownAddress(INADDR_ANY, 8000);
     SocketAddress fromAddress;
 
     mSocket->Bind(ownAddress);
@@ -15,9 +15,9 @@ int main()
     mSocket->Listen(SOMAXCONN);
 
     TCPSocketPtr clientSocket = mSocket->Accept(fromAddress);
-    
+
     char buf[256];
-    
+
 
     while (true)
     {
