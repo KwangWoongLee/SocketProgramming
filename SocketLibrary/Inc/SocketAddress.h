@@ -21,6 +21,7 @@ public:
 		GetAsSockAddrIn()->sin_port = 0;
 	}
 
+	sockaddr GetSockAddr() const { return mSockAddr; }
 	size_t GetSize() const { return sizeof(sockaddr); }
 
 private:

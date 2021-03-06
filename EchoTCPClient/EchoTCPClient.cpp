@@ -7,7 +7,7 @@ int main()
 
     TCPSocketPtr mSocket = SocketUtil::CreateTCPSocket(IPv4);
 
-    SocketAddressPtr serverAddress = SocketAddressFactory::CreateIPv4FromString("127.0.0.1:8000");
+    SocketAddressPtr serverAddress = SocketAddressFactory::CreateIPv4FromString("127.0.0.1:9990");
 
 
     if (mSocket->Connect(*serverAddress) != NOERROR)
